@@ -52,7 +52,7 @@ class Replicator extends Fieldtype
         ]);
     }
 
-    protected function fields($set)
+    public function fields($set)
     {
         return new Fields($this->config("sets.$set.fields"));
     }

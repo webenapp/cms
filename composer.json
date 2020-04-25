@@ -25,6 +25,7 @@
         "symfony/var-exporter": "^4.3",
         "symfony/yaml": "^4.1@dev",
         "twistor/flysystem-guzzle": "^6.0",
+        "webonyx/graphql-php": "^0.13.8",
         "webuni/commonmark-attributes-extension": "^1.0",
         "wilderborn/partyline": "^1.0"
     },

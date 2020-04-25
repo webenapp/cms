@@ -2,10 +2,12 @@
 
 namespace Statamic\Fieldtypes;
 
-use Statamic\Fields\Fields;
 use Scrumpy\ProseMirrorToHtml\Renderer;
+use Statamic\Fields\Fields;
 use Statamic\Fieldtypes\Bard\Augmentor;
 use Statamic\Query\Scopes\Filters\Fields\Bard as BardFilter;
+use Statamic\GraphQL\Types\BardItem;
+use Statamic\GraphQL\Types\Type;
 
 class Bard extends Replicator
 {
@@ -337,5 +339,18 @@ class Bard extends Replicator
 
             return $item;
         })->all();
+    }
+
+    public function graphQLType(array $args = [])
+    {
+        if (! $this->config('sets')) {
+            return Type::string();
+        }
+
+        $args['scope'][] = $this->field()->handle();
+
+        return Type::listOf(
+            Type::get(BardItem::class, array_merge($args, ['fieldtype' => $this]))
+        );
     }
 }

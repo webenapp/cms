@@ -216,4 +216,9 @@ class Fields
     {
         return $this->validator()->withRules($extraRules)->validate();
     }
+
+    public function toGraphQL(array $args = [])
+    {
+        return $this->fields->map->toGraphQL($args);
+    }
 }

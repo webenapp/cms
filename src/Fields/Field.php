@@ -2,10 +2,11 @@
 
 namespace Statamic\Fields;
 
-use Statamic\Support\Str;
-use Statamic\CP\FieldtypeFactory;
-use Illuminate\Contracts\Support\Arrayable;
 use Facades\Statamic\Fields\FieldtypeRepository;
+use Illuminate\Contracts\Support\Arrayable;
+use Statamic\CP\FieldtypeFactory;
+use Statamic\GraphQL\Types\Type;
+use Statamic\Support\Str;
 
 class Field implements Arrayable
 {
@@ -275,5 +276,16 @@ class Field implements Arrayable
     public function meta()
     {
         return $this->fieldtype()->preload();
+    }
+
+    public function toGraphQL($args)
+    {
+        $type = $this->fieldtype()->graphQLType($args);
+
+        if ($this->isRequired()) {
+            $type = Type::nonNull($type);
+        }
+
+        return $type;
     }
 }
