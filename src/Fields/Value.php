@@ -16,6 +16,8 @@ class Value implements IteratorAggregate, JsonSerializable
     protected $handle;
     protected $fieldtype;
     protected $augmentable;
+    protected $hasBeenAugmented = false;
+    protected $augmented;
     protected $shallow = false;
 
     public function __construct($value, $handle = null, $fieldtype = null, $augmentable = null, $shallow = false)
@@ -42,11 +44,17 @@ class Value implements IteratorAggregate, JsonSerializable
             return $this->raw;
         }
 
+        if ($this->hasBeenAugmented) {
+            return $this->augmented;
+        }
+
         $value = $this->shallow
             ? $this->fieldtype->shallowAugment($this->raw)
             : $this->fieldtype->augment($this->raw);
 
-        return $value;
+        $this->hasBeenAugmented = true;
+
+        return $this->augmented = $value;
     }
 
     public function __toString()
